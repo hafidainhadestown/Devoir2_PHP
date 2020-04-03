@@ -29,22 +29,17 @@ if(!verifPass($password)){
     echo "Mot de passe non valide";
 }
 if(verifPass($password)&&verifEmail($email) ){
-        $handle = fopen("login.txt", "r");
-    $file_contents = fread( $handle, filesize( "login.txt" ) );
-    fclose( $handle );
-    // On met chaque ligne du fichier dans un tableau
-    $lines = explode ( '|', $file_contents );
-    //On sépare chacune des lignes .
-    foreach ( $lines as $line ) {
-        list( $em, $pass ) = explode( ' ', $line );}
+        $file = fopen("login.txt", "r");
+        while(!feof($file)){
+        $line = fgets($file);
+        list($em, $pass) = explode('|', $line);
+        if(trim($em) == $email && trim($pass) == $password){
+            echo 'Authentification reussite';
 
-        if ( ( $em == "$email" ) && ( $pass == "$password" ) ) {
-            echo "Vous etes authorises";
-            $link_address1 = 'Accueil1.php';
-            echo "<a href='$link_address1'>Home page</a>";
-
+            break;
         }
-        else {echo"Vous n'etes pas autorises ";}
+    }
+    fclose($file);
 
 
     }
